@@ -79,7 +79,7 @@ function OpenShopMenu(zone)
 
             selected_elements[#selected_elements + 1] = {
                 icon = "fa-solid fa-cart-shopping",
-                title = 'Buy Cash',
+                title = 'Buy',
                 weaponName = element.weaponName,
                 value = "buy",
             }
