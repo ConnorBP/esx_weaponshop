@@ -27,71 +27,73 @@ Config.Zones = {
 		Items = {
 			{
 				name = "WEAPON_PISTOL",
-				price = 500
+                price = 500,
+				ammo_price = 5 -- per unit price
 			},
 			{
 				name = "WEAPON_FLASHLIGHT",
-				price = 70
+                price = 70,
 			},
 			{
 				name = "WEAPON_MACHETE",
-				price = 110
+				price = 110,
 			},
 			{
 				name = "WEAPON_NIGHTSTICK",
-				price = 150
+				price = 150,
 			},
 			{
 				name = "WEAPON_BAT",
-				price = 50
-			},
-			{
-				name = "WEAPON_STUNGUN",
-				price = 60
+				price = 50,
 			},
 			{
 				name = "WEAPON_MICROSMG",
-				price = 1700
+				price = 1700,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_ASSAULTRIFLE",
-				price = 11000
+				price = 11000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_STUNGUN",
-				price = 60
+				price = 60,
 			},
 			{
 				name = "WEAPON_SPECIALCARBINE",
-				price = 15000
+				price = 15000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_SNIPERRIFLE",
-				price = 24000
+				price = 24000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_FIREWORK",
-				price = 21000
+				price = 21000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_GRENADE",
-				price = 700
+				price = 700,
 			},
 			{
 				name = "WEAPON_BZGAS",
-				price = 200
+				price = 200,
 			},
 			{
 				name = "WEAPON_FIREEXTINGUISHER",
-				price = 100
+				price = 100,
 			},
 			{
 				name = "WEAPON_BALL",
-				price = 30
+				price = 30,
 			},
 			{
 				name = "WEAPON_SMOKEGRENADE",
-				price = 100
+				price = 100,
 			},
 	},
 		Locations = {
@@ -120,7 +122,8 @@ Config.Zones = {
 		Items = {
 			{
 				name = "WEAPON_PISTOL",
-				price = 500
+				price = 500,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_FLASHLIGHT",
@@ -144,11 +147,13 @@ Config.Zones = {
 			},
 			{
 				name = "WEAPON_MICROSMG",
-				price = 1700
+				price = 1700,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_ASSAULTRIFLE",
-				price = 11000
+				price = 11000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_STUNGUN",
@@ -156,15 +161,18 @@ Config.Zones = {
 			},
 			{
 				name = "WEAPON_SPECIALCARBINE",
-				price = 15000
+				price = 15000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_SNIPERRIFLE",
-				price = 24000
+				price = 24000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_FIREWORK",
-				price = 21000
+				price = 21000,
+				ammo_price = 5
 			},
 			{
 				name = "WEAPON_GRENADE",

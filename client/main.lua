@@ -32,8 +32,6 @@ function OpenBuyLicenseMenu(zone)
     end)
 end
 
-
-
 function OpenShopMenu(zone)
     shopOpen = true
     local elements = {{
@@ -48,24 +46,58 @@ function OpenShopMenu(zone)
         elements[#elements + 1] = {
             icon = "fa-solid fa-gun",
             title = item.label,
-            description = "Price: $".. ESX.Math.GroupDigits(item.price),
+            description = "Price: $" .. ESX.Math.GroupDigits(item.price),
             price = item.price,
+            ammoPrice = item.ammo_price or nil,
             weaponName = item.name,
-            value = "buy"
+            value = "selected",
         }
     end
-
+    
     ESX.OpenContext(Config.MenuPosition, elements, function(menu, element)
 
-        if element.value == "buy" then
-            ESX.TriggerServerCallback('esx_weaponshop:buyWeapon', function(bought)
-                if bought then
-                    DisplayBoughtScaleform(element.weaponName, element.price)
-					ESX.CloseContext()
-                else
-                    PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
+        if element.value == 'selected' then
+            local selected_elements = {{
+                    icon = "fa-solid fa-bullseye",
+                    unselectable = true,
+                    description = TranslateCap("weapon_shop_menu_description").. " - $" .. ESX.Math.GroupDigits(element.price),
+                    title = ESX.GetWeaponLabel(element.weaponName)
+            }}
+            
+            if element.ammoPrice then            
+                selected_elements[#selected_elements + 1] = {
+                    icon = "fa-solid fa-gun",
+                    title = 'Ammo:',
+                    description = "Price: $".. ESX.Math.GroupDigits(element.ammoPrice),
+                    input = true,
+                    inputType = 'number',
+                    inputPlaceholder = 'Ammo',
+                    inputValue = 42,
+                    inputMin = 0
+                }
+            end
+
+            selected_elements[#selected_elements + 1] = {
+                icon = "fa-solid fa-cart-shopping",
+                title = 'Buy Cash',
+                weaponName = element.weaponName,
+                value = "buy",
+            }
+
+            ESX.OpenContext(Config.MenuPosition, selected_elements, function(menu2, element2)
+                if element2.value == "buy" then
+                    ESX.TriggerServerCallback('esx_weaponshop:buyWeapon', function(bought)
+                        if bought then
+                            DisplayBoughtScaleform(element.weaponName, element.price)
+                            ESX.CloseContext()
+                        else
+                            PlaySoundFrontend(-1, 'ERROR', 'HUD_AMMO_SHOP_SOUNDSET', false)
+                        end
+                    end, element.weaponName, zone, menu2?.eles[2]?.inputValue or 0)
                 end
-            end, element.weaponName, zone)
+            end, function(menu)
+                shopOpen = false
+            end)
         end
 
     end, function(menu)
@@ -132,7 +164,6 @@ local textShown = false
 local GetEntityCoords = GetEntityCoords
 local CreateThread = CreateThread
 local Wait = Wait
-local IsControlJustReleased = IsControlJustReleased
 
 -- Display markers
 CreateThread(function()
@@ -147,19 +178,23 @@ CreateThread(function()
                     currentShop = v.Locations[i]
                     sleep = 0
                     if #(coords - currentShop) < 2.0 then
-                        if not textShown then
+                        if not textShown and not shopOpen then
                             ESX.TextUI(TranslateCap('shop_menu_prompt', ESX.GetInteractKey()))
                             textShown = true
                             nearbyZone = k
                         end
+                    else
+                        if textShown then
+                            textShown = false
+                            ESX.HideUI()
+                        end
                     end
-                    DrawMarker(Config.Type, v.Locations[i].x, v.Locations[i].y, v.Locations[i].z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.Size.x, Config.Size.y,
-                    Config.Size.z, Config.Color.r, Config.Color.g, Config.Color.b, 100, false, true, 2, false, false,
-                    false, false)
+                    
+                    DrawMarker(Config.Type, v.Locations[i].x, v.Locations[i].y, v.Locations[i].z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, Config.Size.x, Config.Size.y, Config.Size.z, Config.Color.r, Config.Color.g, Config.Color.b, 100, false, true, 2, false, false, false, false)
                 end
             end
         end
-
+       
         if (not currentShop or shopOpen) and textShown then
             textShown = false
             nearbyZone = nil
