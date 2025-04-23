@@ -7,6 +7,7 @@ Locales ['en'] = {
   ['yes'] = '%s',
   ['no'] = 'no',
   ['weapon_bought'] = 'purchased for $%s',
+  ['bought_ammo'] = 'purchased %s ammo for %s',
   ['not_enough_black'] = 'you do not have enough dirty money',
   ['not_enough'] = 'you do not have enough money',
   ['already_owned'] = 'you already own this weapon!',

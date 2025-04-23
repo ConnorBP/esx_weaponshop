@@ -47,9 +47,37 @@ ESX.RegisterServerCallback('esx_weaponshop:buyWeapon', function(source, cb, weap
 		cb(false)
 	else
 		if xPlayer.hasWeapon(weaponName) then
-			xPlayer.showNotification(TranslateCap('already_owned'))
-			cb(false)
-		else
+            -- Player already has the weapon, attempt to buy only ammo
+            if ammoAmount > 0 and ammoPrice > 0 then
+                if zone == 'BlackWeashop' then
+                    local black_money = xPlayer.getAccount('black_money').money
+                    if black_money >= ammoPrice then
+                        xPlayer.removeAccountMoney('black_money', ammoPrice, "Black Market Ammo Purchase")
+                        xPlayer.addWeaponAmmo(weaponName, ammoAmount) -- Use addWeaponAmmo to add ammo
+                        xPlayer.showNotification(TranslateCap('bought_ammo', ammoAmount, ESX.GetWeaponLabel(weaponName)))
+                        cb(true)
+                    else
+                        xPlayer.showNotification(TranslateCap('not_enough_black'))
+                        cb(false)
+                    end
+                else
+                    local money = xPlayer.getMoney()
+                    if money >= ammoPrice then
+                        xPlayer.removeMoney(ammoPrice, "Ammo Purchase")
+                        xPlayer.addWeaponAmmo(weaponName, ammoAmount) -- Use addWeaponAmmo to add ammo
+                        xPlayer.showNotification(TranslateCap('bought_ammo', ammoAmount, ESX.GetWeaponLabel(weaponName)))
+                        cb(true)
+                    else
+                        xPlayer.showNotification(TranslateCap('not_enough'))
+                        cb(false)
+                    end
+                end
+            else
+                -- No ammo requested or ammo is free, but they already own the weapon
+                xPlayer.showNotification(TranslateCap('already_owned'))
+                cb(false)
+            end
+        else
             if zone == 'BlackWeashop' then
                 local black_money = xPlayer.getAccount('black_money').money
 				local total_price = price + ammoPrice
